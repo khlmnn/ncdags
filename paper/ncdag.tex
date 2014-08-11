@@ -1,0 +1,256 @@
+\documentclass[a4paper]{article}
+
+%\renewcommand*{\sectfont}{\normalfont\bfseries}
+
+\usepackage{fixltx2e}
+\usepackage{isomath}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[british]{babel}
+
+\usepackage{natbib}
+\usepackage{proof}
+\usepackage{tikz}
+
+\usepackage{microtype}
+
+\newcommand*{\INFER}[3][]{\ensuremath{\infer[#1]{\mathstrut #2}{\mathstrut #3}}}
+
+\newcommand*{\GRAPHR}[2]{%
+	\begin{tikzpicture}[xscale=0.5, yscale=1.5]
+		\path[draw, white] (0, 0) rectangle (1, 0.5);
+		\path[thick, ->=stealth] (0, 0) edge[out=90, in=90] (1, 0);
+		\node[anchor=north] at (0, 0) {$\mathstrut #1$};
+		\node[anchor=north] at (1, 0) {$\mathstrut #2$};
+	\end{tikzpicture}%
+}
+
+\newcommand*{\GRAPHL}[2]{%
+	\begin{tikzpicture}[xscale=0.5, yscale=1.5]
+		\path[draw, white] (0, 0) rectangle (1, 0.5);
+		\path[thick, <-=stealth] (0, 0) edge[out=90, in=90] (1, 0);
+		\node[anchor=north] at (0, 0) {$\mathstrut #1$};
+		\node[anchor=north] at (1, 0) {$\mathstrut #2$};
+	\end{tikzpicture}%
+}
+
+\newcommand*{\GRAPHH}[2]{%
+	\begin{tikzpicture}[xscale=0.5, yscale=1.5]
+		\path[draw, white] (0, 0) rectangle (1, 0.5);
+		\path[draw, thick, gray] (0, 0) rectangle (1, 0.25);
+		\node[anchor=north] at (0, 0) {$\mathstrut #1$};
+		\node[anchor=north] at (1, 0) {$\mathstrut #2$};
+	\end{tikzpicture}%
+}
+
+\newcommand*{\SEQR}[2]{%
+	\begin{tikzpicture}[xscale=0.5, yscale=1.5]
+		\path[draw, white] (0, 0) rectangle (3.5, 0.5);
+		\path[thick, ->=stealth] (0, 0) edge[out=90, in=90] (1, 0);
+		\node[anchor=south] at (1.75, 0) {$\mathstrut\cdots$};
+		\path[thick, ->=stealth] (2.5, 0) edge[out=90, in=90] (3.5, 0);
+		\node[anchor=north] at (0, 0) {$\mathstrut #1$};
+		\node[anchor=north] at (3.5, 0) {$\mathstrut #2$};
+	\end{tikzpicture}%
+}
+
+\newcommand*{\SEQL}[2]{%
+	\begin{tikzpicture}[xscale=0.5, yscale=1.5]
+		\path[draw, white] (0, 0) rectangle (3.5, 0.5);
+		\path[thick, <-=stealth] (0, 0) edge[out=90, in=90] (1, 0);
+		\node[anchor=south] at (1.75, 0) {$\mathstrut\cdots$};
+		\path[thick, <-=stealth] (2.5, 0) edge[out=90, in=90] (3.5, 0);
+		\node[anchor=north] at (0, 0) {$\mathstrut #1$};
+		\node[anchor=north] at (3.5, 0) {$\mathstrut #2$};
+	\end{tikzpicture}%
+}
+
+\newcommand*{\SEQM}[2]{%
+	\begin{tikzpicture}[xscale=0.5, yscale=1.5]
+		\path[draw, white] (0, 0) rectangle (3.5, 0.5);
+		\path[thick] (0, 0) edge[out=90, in=90] (1, 0);
+		\node[anchor=south] at (1.75, 0) {$\mathstrut\cdots$};
+		\path[thick] (2.5, 0) edge[out=90, in=90] (3.5, 0);
+		\node[anchor=north] at (0, 0) {$\mathstrut #1$};
+		\node[anchor=north] at (3.5, 0) {$\mathstrut #2$};
+	\end{tikzpicture}%
+}
+
+\newcommand*{\SEQU}[2]{%
+	\begin{tikzpicture}[xscale=0.5, yscale=1.5]
+		\path[draw, white] (0, 0) rectangle (3.5, 0.5);
+		\path[draw, thick, gray] (0, 0) rectangle (1, 0.25);
+		\node[anchor=south] at (1.75, 0) {$\mathstrut\cdots$};
+		\path[draw, thick, gray] (2.5, 0) rectangle (3.5, 0.25);
+		\node[anchor=north] at (0, 0) {$\mathstrut #1$};
+		\node[anchor=north] at (3.5, 0) {$\mathstrut #2$};
+	\end{tikzpicture}%
+}
+
+\begin{document}
+
+\title{Parsing to Noncrossing Acyclic Digraphs}
+
+\author{%
+	Marco Kuhlmann\\
+	Dept.\ of Computer and Information Science\\
+	Linköping University, Sweden}
+
+\maketitle
+
+
+\section{Introduction}
+
+A \emph{noncrossing graph} of size $n$ is a graph drawn on $n$ points laid out on a circle and numbered in counter-clockwise order from 1 to $n$ such that the edges are straight-line segments that do not cross.
+This note is about \emph{noncrossing acyclic digraphs}.
+Their number is given by the following sequence \citep{tirrell2014number}:
+\begin{center}
+	1, 3, 25, 335, 5521, 101551, 1998753, 41188543, 877423873, 19166868607, \dots
+\end{center}
+
+We are interested in an algorithm that takes a number $n$ and constructs a compact representation of the set of all noncrossing acyclic digraphs of size~$n$.
+More formally, 
+
+
+\section{Algebraic Structure}
+
+\begin{displaymath}
+	\GRAPHR{1}{2}
+	\qquad
+	\GRAPHL{1}{2}
+	\qquad
+	\GRAPHH{1}{2}
+\end{displaymath}
+
+We build noncrossing acylic digraphs using three operations:
+\begin{itemize}
+	\item Concatenate two graphs, identifying the rightmost node of the first graph with the leftmost node of the second graph.
+	\item Extend a given graph by adding an edge from the leftmost node to the rightmost node.
+	\item Extend a given graph by adding an edge from the rightmost node to the leftmost node.
+\end{itemize}
+
+For example, there are 3 noncrossing acyclic digraphs on 2 of size 2: the graph with the edge $1 \to 2$, the graph with the edge $2 \to 1$, and the graph with no edges.
+
+\section{Inference System}
+
+We specify our algorithm in terms of a deduction system \citep{shieber1995principles}.
+We assume that we are given a number $n \geq 2$.
+The \emph{items} of our logic take one of six possible forms.
+\begin{displaymath}
+	\GRAPHR{i}{j}
+	\qquad
+	\GRAPHL{i}{j}
+	\qquad
+	\GRAPHH{i}{j}
+\end{displaymath}
+These items represent a noncrossing acyclic digraph whose leftmost node is $i$, whose rightmost node is $j$, and that has an edge $i \to j$ (first type) or $j \to i$.
+
+\paragraph{Sequences}
+
+The next three item types represent 
+
+\begin{displaymath}
+	\SEQR{i}{j}
+	\qquad
+	\SEQL{i}{j}
+	\qquad
+	\SEQM{i}{j}
+\end{displaymath}
+
+\paragraph{Unconnected}
+
+\begin{displaymath}
+	\SEQU{i}{j}
+\end{displaymath}
+
+The first set of rules create connected sequences.
+\begin{displaymath}
+	\INFER{\SEQR{i}{k}}{\GRAPHR{i}{j} & \GRAPHR{j}{k}}
+	\qquad
+	\INFER{\SEQL{i}{k}}{\GRAPHL{i}{j} & \GRAPHL{j}{k}}
+	\qquad
+	\INFER{\SEQM{i}{k}}{\GRAPHR{i}{j} & \GRAPHL{j}{k}}
+	\qquad
+	\INFER{\SEQM{i}{k}}{\GRAPHL{i}{j} & \GRAPHR{j}{k}}
+\end{displaymath}
+
+The following rules create unconnected sequences.
+\begin{displaymath}
+	\INFER{\SEQU{i}{k}}{\GRAPHR{i}{j} & \GRAPHH{j}{k}}
+	\qquad
+	\INFER{\SEQU{i}{k}}{\GRAPHH{i}{j} & \GRAPHR{j}{k}}
+	\qquad
+	\INFER{\SEQU{i}{k}}{\GRAPHL{i}{j} & \GRAPHH{j}{k}}
+	\qquad
+	\INFER{\SEQU{i}{k}}{\GRAPHH{i}{j} & \GRAPHL{j}{k}}
+\end{displaymath}
+
+\paragraph{Extend Sequences}
+
+\begin{displaymath}
+	\INFER{\SEQR{i}{k}}{\SEQR{i}{j} & \GRAPHR{j}{k}}
+	\qquad
+	\INFER{\SEQM{i}{k}}{\SEQR{i}{j} & \GRAPHL{j}{k}}
+	\qquad
+	\INFER{\SEQU{i}{k}}{\SEQR{i}{j} & \GRAPHH{j}{k}}
+\end{displaymath}
+
+\begin{displaymath}
+	\INFER{\SEQM{i}{k}}{\SEQL{i}{j} & \GRAPHR{j}{k}}
+	\qquad
+	\INFER{\SEQL{i}{k}}{\SEQL{i}{j} & \GRAPHL{j}{k}}
+	\qquad
+	\INFER{\SEQU{i}{k}}{\SEQL{i}{j} & \GRAPHH{j}{k}}
+\end{displaymath}
+
+\begin{displaymath}
+	\INFER{\SEQM{i}{k}}{\SEQM{i}{j} & \GRAPHR{j}{k}}
+	\qquad
+	\INFER{\SEQM{i}{k}}{\SEQM{i}{j} & \GRAPHL{j}{k}}
+	\qquad
+	\INFER{\SEQU{i}{k}}{\SEQM{i}{j} & \GRAPHH{j}{k}}
+\end{displaymath}
+
+\begin{displaymath}
+	\INFER{\SEQU{i}{k}}{\SEQU{i}{j} & \GRAPHR{j}{k}}
+	\qquad
+	\INFER{\SEQU{i}{k}}{\SEQU{i}{j} & \GRAPHL{j}{k}}
+	\qquad
+	\INFER{\SEQU{i}{k}}{\SEQU{i}{j} & \GRAPHH{j}{k}}
+\end{displaymath}
+
+\paragraph{Cover Sequences}
+
+\begin{displaymath}
+	\INFER{\GRAPHR{i}{j}}{\SEQR{i}{j}}
+	\qquad
+	\INFER{\GRAPHR{i}{j}}{\SEQM{i}{j}}
+	\qquad
+	\INFER{\GRAPHR{i}{j}}{\SEQU{i}{j}}
+\end{displaymath}
+
+\begin{displaymath}
+	\INFER{\GRAPHL{i}{j}}{\SEQL{i}{j}}
+	\qquad
+	\INFER{\GRAPHL{i}{j}}{\SEQM{i}{j}}
+	\qquad
+	\INFER{\GRAPHL{i}{j}}{\SEQU{i}{j}}
+\end{displaymath}
+
+
+\section{Code}
+
+The inference system can be implemented using a bottom-up dynamic programming algorithm.
+The code is available on GitHub.
+
+
+\section{Conclusion}
+
+can be used to compute highest-scoring graph under an arc-factored scoring model, count the number of graphs, compute inside and outside scores
+
+
+\bibliographystyle{plainnat}
+\bibliography{mcqm}
+
+\end{document}
