@@ -232,6 +232,7 @@ public class Counter {
 		BigInteger result = BigInteger.ZERO;
 		result = result.add(chartCR.get(0, nNodes - 1));
 		result = result.add(chartCL.get(0, nNodes - 1));
+		result = result.add(chartCH.get(0, nNodes - 1));
 		result = result.add(chartSR.get(0, nNodes - 1));
 		result = result.add(chartSL.get(0, nNodes - 1));
 		result = result.add(chartSM.get(0, nNodes - 1));
