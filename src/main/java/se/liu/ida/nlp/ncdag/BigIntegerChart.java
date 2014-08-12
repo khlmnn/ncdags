@@ -21,10 +21,22 @@ public class BigIntegerChart {
 	}
 
 	public BigInteger get(int min, int max) {
-		return chart[min][max - min];
+		BigInteger b = chart[min][max - min];
+		if (b == null) {
+			b = BigInteger.ZERO;
+		}
+		return b;
 	}
 
 	public void set(int min, int max, BigInteger value) {
 		chart[min][max - min] = value;
+	}
+
+	public void add(int min, int max, BigInteger value) {
+		BigInteger b = chart[min][max - min];
+		if (b == null) {
+			b = BigInteger.ZERO;
+		}
+		chart[min][max - min] = b.add(value);
 	}
 }
