@@ -14,3 +14,7 @@ This number is given by the following integer sequence:
 This sequence was first described in an answer to [a question that I asked on MathOverflow](http://mathoverflow.net/questions/176944/).
 
 Another application of the tabulation technique is in semantic dependency parsing, where it can be used to compute the highest-scoring dependency graph for a given sentence under an edge-factored model.
+
+## License
+
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" rel="dct:type">work</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.ida.liu.se/~marku61/" property="cc:attributionName" rel="cc:attributionURL">Marco Kuhlmann</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/khlmnn/ncdags" rel="dct:source">https://github.com/khlmnn/ncdags</a>.
