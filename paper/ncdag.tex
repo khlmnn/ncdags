@@ -262,7 +262,7 @@ Statements are represented by formulas called \emph{items}.
 
 \paragraph{Notation}
 
-Recall that $n \geq 2$.
+Recall that I assume that $n \geq 2$.
 In the following, $1 \leq i \leq j \leq k \leq n$.
 
 \subsection{Items}
@@ -422,7 +422,7 @@ There are 6~cases; I group them based on the direction of the covering edge.
 
 This completes the presentation of the rules.
 
-\subsection{Goal}
+\subsection{Goal Items}
 
 In contrast to the deduction systems of \citet{shieber1995principles}, the proposed tabulation does not have a unique goal item but 7~different goal items, corresponding to the 7~types of noncrossing acyclic digraphs (Section~\ref{sec:Classification}).
 \begin{gather*}
@@ -447,12 +447,35 @@ While I shall not provide a complete formal analysis of the tabulation, I briefl
 \begin{itemize}
 	\item The runtime of the tabulation is in $O(n^3)$ and the space required for it is in $O(n^2)$. This can be seen by counting the number of possible instances of each inference rule and item.
 	
-	\item The deduction system is \emph{sound}, meaning that for each rule, if the statements encoded by the antecedents hold, then the statement encoded by the consequent holds as well. To see this, one would translate each rule into an implication as I exemplified it for rule~03, and check the validity of this implication.
+	\item The deduction system is \emph{sound}, meaning that for each rule, if the statements encoded by the antecedents hold, then the statement encoded by the consequent holds as well. To see this, one would check the soundness of each rule.
 	
-	\item The deduction system is \emph{complete}, meaning that every noncrossing acyclic digraph can be constructed in a way that can be simulated by the inference rules. The completeness argument is based on the observation that the classification specified in Section~\ref{sec:Classification} is exhaustive.
+	\item The deduction system is \emph{complete}, meaning that every noncrossing acyclic digraph can be constructed in a way that can be simulated by the inference rules. The completeness argument would start from the observation that the classification given in Section~\ref{sec:Classification} is exhaustive, and then check for each rule that undoing the operation simulated by that rule decomposes a graph represented by the consequent item into the graphs represented by the antecedents.
 	
-	\item Every noncrossing acyclic digraph has a unique derivation in the deduction system. This property is useful because it means that we do not need to distinguish between graphs and their derivations. In particular, we can count graphs by counting their derivations. The uniqueness argument is based on the observation that the classification specified in Section~\ref{sec:Classification} is unique.
+	\item Every noncrossing acyclic digraph has a \emph{unique} derivation in the deduction system. This property is useful because it means that we do not need to distinguish between graphs and their derivations. In particular, we can count graphs by counting their derivations. The uniqueness argument would make use of the observations that the graph types distinguished in Section~\ref{sec:Classification} are non"-overlapping, and that the backward application of rules is deterministic in the sense that for each graph there is at most one rule in which this graph appears as the consequent item.
 \end{itemize}
+
+
+\section{Derived Tabulations}
+
+I conclude this note by discussing how tabulation techniques for other classes of noncrossing graphs can be derived from the proposed technique.
+
+\subsection{Enforcing Weak Connectivity}
+
+To obtain a deduction system for \emph{weakly connected} noncrossing acyclic digraphs one removes rule 20 (concatenate an unconnected graph and the elementary graph) and deletes the item for unconnected graphs from the list of goal items.
+Along with this change comes a revised intended interpretation for the items for unconnected graphs:
+`It is possible to construct a noncrossing acyclic digraph on the vertices $i, \dots, j$ that is not edge"-covered and has exactly two weakly connected components.'
+The integer sequence for weakly connected noncrossing acyclic digraphs is:
+\begin{center}
+	1, 2, 18, 242, 3890, 69074, 1306466, 25809826, 526358946, 10997782882, \dots
+\end{center}
+
+\subsection{Unrestricted Noncrossing Digraphs}
+
+To obtain a deduction system for \emph{unrestricted} (not necessarily acyclic) noncrossing digraphs, one does away with the items for minmax"-connected and maxmin"-connected graphs, and deletes all rules that reference them -- with the exception of rules 01 and 02 (concatenating two edge"-covered graphs with the same directionality of the covering edge), which should be changed to produce mix"-connected items.
+This yields the following integer sequence for unrestricted noncrossing digraphs:
+\begin{center}
+	1, 3, 27, 405, 7533, 156735, 3492639, 81520425, 1967414265, 48696234075, \dots
+\end{center}
 
 
 \section*{Acknowledgments}
