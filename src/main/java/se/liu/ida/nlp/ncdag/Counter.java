@@ -252,4 +252,17 @@ public class Counter {
 	private static void update(BigIntegerChart chart, int min, int max, BigInteger nDerivations1, BigInteger nDerivations2) {
 		chart.add(min, max, nDerivations1.multiply(nDerivations2));
 	}
+
+	public static void main(String[] args) {
+		Counter counter = Counter.getInstance();
+		int nNodes = Integer.parseInt(args[0]);
+		StringBuilder sb = new StringBuilder();
+		sb.append(counter.getNDerivations(1));
+		for (int i = 2; i <= nNodes; i++) {
+			sb.append(", ");
+			sb.append(counter.getNDerivations(i));
+		}
+		System.out.println(sb);
+		System.exit(0);
+	}
 }
