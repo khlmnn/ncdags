@@ -10,7 +10,7 @@ import java.math.BigInteger;
  * graph</em> on <em>n</em> vertices is a graph drawn on <em>n</em> points
  * numbered from 1 to <em>n</em> in counter-clockwise order on a circle such
  * that the edges lie entirely within the circle and do not cross each other.
- * OEIS: A246756
+ * OEIS: A246756, 1, 3, 25, 335, 5521, 101551, 1998753, 41188543, 877423873, 19166868607
  *
  * @author Marco Kuhlmann <marco.kuhlmann@liu.se>
  */
@@ -44,69 +44,69 @@ public class Counter {
 	    for (int min = max - 1; min >= 0; min--) {
 		// Concatenate two edge-covered graphs.
 		// Rule 01
-		for (int mid = min + 1; mid < max; mid++) {
-		    BigInteger nDerivations1 = nMinMaxCovered.get(min, mid);
-		    BigInteger nDerivations2 = nMinMaxCovered.get(mid, max);
-		    update(nMinMaxConnected, min, max, nDerivations1, nDerivations2);
-		}
+//		for (int mid = min + 1; mid < max; mid++) {
+//		    BigInteger nDerivations1 = nMinMaxCovered.get(min, mid);
+//		    BigInteger nDerivations2 = nMinMaxCovered.get(mid, max);
+//		    update(nMinMaxConnected, min, max, nDerivations1, nDerivations2);
+//		}
 
 		// Rule 02
-		for (int mid = min + 1; mid < max; mid++) {
-		    BigInteger nDerivations1 = nMaxMinCovered.get(min, mid);
-		    BigInteger nDerivations2 = nMaxMinCovered.get(mid, max);
-		    update(nMaxMinConnected, min, max, nDerivations1, nDerivations2);
-		}
+//		for (int mid = min + 1; mid < max; mid++) {
+//		    BigInteger nDerivations1 = nMaxMinCovered.get(min, mid);
+//		    BigInteger nDerivations2 = nMaxMinCovered.get(mid, max);
+//		    update(nMaxMinConnected, min, max, nDerivations1, nDerivations2);
+//		}
 
 		// Rule 03
-		for (int mid = min + 1; mid < max; mid++) {
-		    BigInteger nDerivations1 = nMinMaxCovered.get(min, mid);
-		    BigInteger nDerivations2 = nMaxMinCovered.get(mid, max);
-		    update(nUnconnected, min, max, nDerivations1, nDerivations2);
-		}
+//		for (int mid = min + 1; mid < max; mid++) {
+//		    BigInteger nDerivations1 = nMinMaxCovered.get(min, mid);
+//		    BigInteger nDerivations2 = nMaxMinCovered.get(mid, max);
+//		    update(nUnconnected, min, max, nDerivations1, nDerivations2);
+//		}
 
 		// Rule 04
-		for (int mid = min + 1; mid < max; mid++) {
-		    BigInteger nDerivations1 = nMaxMinCovered.get(min, mid);
-		    BigInteger nDerivations2 = nMinMaxCovered.get(mid, max);
-		    update(nUnconnected, min, max, nDerivations1, nDerivations2);
-		}
+//		for (int mid = min + 1; mid < max; mid++) {
+//		    BigInteger nDerivations1 = nMaxMinCovered.get(min, mid);
+//		    BigInteger nDerivations2 = nMinMaxCovered.get(mid, max);
+//		    update(nUnconnected, min, max, nDerivations1, nDerivations2);
+//		}
 
 		// Concatenate an edge-covered graph and the elementary graph.
 		// Rule 05
-		{
-		    BigInteger nDerivations = nMinMaxCovered.get(min, max - 1);
-		    update(nUnconnected, min, max, nDerivations);
-		}
+//		{
+//		    BigInteger nDerivations = nMinMaxCovered.get(min, max - 1);
+//		    update(nUnconnected, min, max, nDerivations);
+//		}
 
 		// Rule 06
-		{
-		    BigInteger nDerivations = nMinMaxCovered.get(min + 1, max);
-		    update(nUnconnected, min, max, nDerivations);
-		}
+//		{
+//		    BigInteger nDerivations = nMinMaxCovered.get(min + 1, max);
+//		    update(nUnconnected, min, max, nDerivations);
+//		}
 
 		// Rule 07
-		{
-		    BigInteger nDerivations = nMaxMinCovered.get(min, max - 1);
-		    update(nUnconnected, min, max, nDerivations);
-		}
+//		{
+//		    BigInteger nDerivations = nMaxMinCovered.get(min, max - 1);
+//		    update(nUnconnected, min, max, nDerivations);
+//		}
 
 		// Rule 08
-		{
-		    BigInteger nDerivations = nMaxMinCovered.get(min + 1, max);
-		    update(nUnconnected, min, max, nDerivations);
-		}
+//		{
+//		    BigInteger nDerivations = nMaxMinCovered.get(min + 1, max);
+//		    update(nUnconnected, min, max, nDerivations);
+//		}
 
 		// Concatenate a connected graph and an edge-covered graph.
 		// Group 1: The first argument is minmax-connected.
 		// Rule 09
-		for (int mid = min + 2; mid < max; mid++) {
+		for (int mid = min + 1; mid < max; mid++) {
 		    BigInteger nDerivations1 = nMinMaxConnected.get(min, mid);
 		    BigInteger nDerivations2 = nMinMaxCovered.get(mid, max);
 		    update(nMinMaxConnected, min, max, nDerivations1, nDerivations2);
 		}
 
 		// Rule 10
-		for (int mid = min + 2; mid < max; mid++) {
+		for (int mid = min + 1; mid < max; mid++) {
 		    BigInteger nDerivations1 = nMinMaxConnected.get(min, mid);
 		    BigInteger nDerivations2 = nMaxMinCovered.get(mid, max);
 		    update(nUnconnected, min, max, nDerivations1, nDerivations2);
@@ -114,14 +114,14 @@ public class Counter {
 
 		// Group 2: The first argument is maxmin-connected.
 		// Rule 11
-		for (int mid = min + 2; mid < max; mid++) {
+		for (int mid = min + 1; mid < max; mid++) {
 		    BigInteger nDerivations1 = nMaxMinConnected.get(min, mid);
 		    BigInteger nDerivations2 = nMinMaxCovered.get(mid, max);
 		    update(nUnconnected, min, max, nDerivations1, nDerivations2);
 		}
 
 		// Rule 12
-		for (int mid = min + 2; mid < max; mid++) {
+		for (int mid = min + 1; mid < max; mid++) {
 		    BigInteger nDerivations1 = nMaxMinConnected.get(min, mid);
 		    BigInteger nDerivations2 = nMaxMinCovered.get(mid, max);
 		    update(nMaxMinConnected, min, max, nDerivations1, nDerivations2);
@@ -129,14 +129,14 @@ public class Counter {
 
 		// Group 3: The first argument is mix-connected.
 		// Rule 13
-		for (int mid = min + 2; mid < max; mid++) {
+		for (int mid = min + 1; mid < max; mid++) {
 		    BigInteger nDerivations1 = nUnconnected.get(min, mid);
 		    BigInteger nDerivations2 = nMinMaxCovered.get(mid, max);
 		    update(nUnconnected, min, max, nDerivations1, nDerivations2);
 		}
 
 		// Rule 14
-		for (int mid = min + 2; mid < max; mid++) {
+		for (int mid = min + 1; mid < max; mid++) {
 		    BigInteger nDerivations1 = nUnconnected.get(min, mid);
 		    BigInteger nDerivations2 = nMaxMinCovered.get(mid, max);
 		    update(nUnconnected, min, max, nDerivations1, nDerivations2);
@@ -191,12 +191,22 @@ public class Counter {
 		    BigInteger nDerivations = nUnconnected.get(min, max);
 		    update(nMaxMinCovered, min, max, nDerivations);
 		}
+
+		{
+		    BigInteger nDerivations = nMinMaxCovered.get(min, max);
+		    update(nMinMaxConnected, min, max, nDerivations);
+		}
+
+		{
+		    BigInteger nDerivations = nMaxMinCovered.get(min, max);
+		    update(nMaxMinConnected, min, max, nDerivations);
+		}
 	    }
 	}
 
 	BigInteger result = BigInteger.ZERO;
-	result = result.add(nMinMaxCovered.get(0, nNodes - 1));
-	result = result.add(nMaxMinCovered.get(0, nNodes - 1));
+//	result = result.add(nMinMaxCovered.get(0, nNodes - 1));
+//	result = result.add(nMaxMinCovered.get(0, nNodes - 1));
 	result = result.add(nMinMaxConnected.get(0, nNodes - 1));
 	result = result.add(nMaxMinConnected.get(0, nNodes - 1));
 	result = result.add(nUnconnected.get(0, nNodes - 1));
