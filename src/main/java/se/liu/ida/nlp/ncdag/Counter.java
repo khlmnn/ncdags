@@ -38,7 +38,6 @@ public class Counter {
 		BigIntegerChart nMaxMinCovered = new BigIntegerChart(nNodes);
 		BigIntegerChart nMinMaxConnected = new BigIntegerChart(nNodes);
 		BigIntegerChart nMaxMinConnected = new BigIntegerChart(nNodes);
-		BigIntegerChart nMixConnected = new BigIntegerChart(nNodes);
 		BigIntegerChart nUnconnected = new BigIntegerChart(nNodes);
 
 		for (int node = 0; node < nNodes - 1; node++) {
@@ -67,14 +66,14 @@ public class Counter {
 				for (int mid = min + 1; mid < max; mid++) {
 					BigInteger nDerivations1 = nMinMaxCovered.get(min, mid);
 					BigInteger nDerivations2 = nMaxMinCovered.get(mid, max);
-					update(nMixConnected, min, max, nDerivations1, nDerivations2);
+					update(nUnconnected, min, max, nDerivations1, nDerivations2);
 				}
 
 				// Rule 04
 				for (int mid = min + 1; mid < max; mid++) {
 					BigInteger nDerivations1 = nMaxMinCovered.get(min, mid);
 					BigInteger nDerivations2 = nMinMaxCovered.get(mid, max);
-					update(nMixConnected, min, max, nDerivations1, nDerivations2);
+					update(nUnconnected, min, max, nDerivations1, nDerivations2);
 				}
 
 				// Concatenate an edge-covered graph and the elementary graph.
@@ -115,7 +114,7 @@ public class Counter {
 				for (int mid = min + 2; mid < max; mid++) {
 					BigInteger nDerivations1 = nMinMaxConnected.get(min, mid);
 					BigInteger nDerivations2 = nMaxMinCovered.get(mid, max);
-					update(nMixConnected, min, max, nDerivations1, nDerivations2);
+					update(nUnconnected, min, max, nDerivations1, nDerivations2);
 				}
 
 				// Group 2: The first argument is maxmin-connected.
@@ -123,7 +122,7 @@ public class Counter {
 				for (int mid = min + 2; mid < max; mid++) {
 					BigInteger nDerivations1 = nMaxMinConnected.get(min, mid);
 					BigInteger nDerivations2 = nMinMaxCovered.get(mid, max);
-					update(nMixConnected, min, max, nDerivations1, nDerivations2);
+					update(nUnconnected, min, max, nDerivations1, nDerivations2);
 				}
 
 				// Rule 12
@@ -136,16 +135,16 @@ public class Counter {
 				// Group 3: The first argument is mix-connected.
 				// Rule 13
 				for (int mid = min + 2; mid < max; mid++) {
-					BigInteger nDerivations1 = nMixConnected.get(min, mid);
+					BigInteger nDerivations1 = nUnconnected.get(min, mid);
 					BigInteger nDerivations2 = nMinMaxCovered.get(mid, max);
-					update(nMixConnected, min, max, nDerivations1, nDerivations2);
+					update(nUnconnected, min, max, nDerivations1, nDerivations2);
 				}
 
 				// Rule 14
 				for (int mid = min + 2; mid < max; mid++) {
-					BigInteger nDerivations1 = nMixConnected.get(min, mid);
+					BigInteger nDerivations1 = nUnconnected.get(min, mid);
 					BigInteger nDerivations2 = nMaxMinCovered.get(mid, max);
-					update(nMixConnected, min, max, nDerivations1, nDerivations2);
+					update(nUnconnected, min, max, nDerivations1, nDerivations2);
 				}
 
 				// Concatenate a connected graph and the elementary graph.
@@ -162,28 +161,7 @@ public class Counter {
 				}
 
 				// Rule 17
-				if (max - min >= 3) {
-					BigInteger nDerivations = nMixConnected.get(min, max - 1);
-					update(nUnconnected, min, max, nDerivations);
-				}
-
-				// Concatenate to an unconnected graph.
-				// Rule 18
-				for (int mid = min + 2; mid < max; mid++) {
-					BigInteger nDerivations1 = nUnconnected.get(min, mid);
-					BigInteger nDerivations2 = nMinMaxCovered.get(mid, max);
-					update(nUnconnected, min, max, nDerivations1, nDerivations2);
-				}
-
-				// Rule 19
-				for (int mid = min + 2; mid < max; mid++) {
-					BigInteger nDerivations1 = nUnconnected.get(min, mid);
-					BigInteger nDerivations2 = nMaxMinCovered.get(mid, max);
-					update(nUnconnected, min, max, nDerivations1, nDerivations2);
-				}
-
-				// Rule 20
-				if (max - min >= 2) { // Applies even to the elementary graph!
+				if (max - min >= 2) {
 					BigInteger nDerivations = nUnconnected.get(min, max - 1);
 					update(nUnconnected, min, max, nDerivations);
 				}
@@ -198,13 +176,6 @@ public class Counter {
 				}
 
 				// Rule 22
-				{
-					// Adds the edge min -> max
-					BigInteger nDerivations = nMixConnected.get(min, max);
-					update(nMinMaxCovered, min, max, nDerivations);
-				}
-
-				// Rule 23
 				{
 					// Adds the edge min -> max
 					BigInteger nDerivations = nUnconnected.get(min, max);
@@ -222,13 +193,6 @@ public class Counter {
 				// Rule 25
 				{
 					// Adds the edge max -> min
-					BigInteger nDerivations = nMixConnected.get(min, max);
-					update(nMaxMinCovered, min, max, nDerivations);
-				}
-
-				// Rule 26
-				{
-					// Adds the edge max -> min
 					BigInteger nDerivations = nUnconnected.get(min, max);
 					update(nMaxMinCovered, min, max, nDerivations);
 				}
@@ -240,7 +204,6 @@ public class Counter {
 		result = result.add(nMaxMinCovered.get(0, nNodes - 1));
 		result = result.add(nMinMaxConnected.get(0, nNodes - 1));
 		result = result.add(nMaxMinConnected.get(0, nNodes - 1));
-		result = result.add(nMixConnected.get(0, nNodes - 1));
 		result = result.add(nUnconnected.get(0, nNodes - 1));
 		return result;
 	}
