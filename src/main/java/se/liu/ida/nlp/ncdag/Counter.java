@@ -43,10 +43,11 @@ public class Counter {
 	BigIntegerChart nMaxMinEdge = new BigIntegerChart(nNodes);
 	BigIntegerChart nMinMaxPath = new BigIntegerChart(nNodes);
 	BigIntegerChart nMaxMinPath = new BigIntegerChart(nNodes);
-	BigIntegerChart nBland = new BigIntegerChart(nNodes);
+	BigIntegerChart nMixConnected = new BigIntegerChart(nNodes);
+	BigIntegerChart nNonConnected = new BigIntegerChart(nNodes);
 
 	for (int node = 0; node < nNodes; node++) {
-	    nBland.set(node, node, BigInteger.ONE);
+	    nMixConnected.set(node, node, BigInteger.ONE);
 	}
 
 	for (int max = 0; max < nNodes; max++) {
@@ -62,14 +63,14 @@ public class Counter {
 		for (int mid = min + 1; mid < max; mid++) {
 		    BigInteger nDerivations1 = nMinMaxEdge.get(min, mid);
 		    BigInteger nDerivations2 = nMaxMinEdge.get(mid, max);
-		    update(nBland, min, max, nDerivations1, nDerivations2);
+		    update(nMixConnected, min, max, nDerivations1, nDerivations2);
 		}
 
 		// Rule 03
 		for (int mid = min + 1; mid < max; mid++) {
 		    BigInteger nDerivations1 = nMaxMinEdge.get(min, mid);
 		    BigInteger nDerivations2 = nMinMaxEdge.get(mid, max);
-		    update(nBland, min, max, nDerivations1, nDerivations2);
+		    update(nMixConnected, min, max, nDerivations1, nDerivations2);
 		}
 
 		// Rule 04
@@ -90,14 +91,14 @@ public class Counter {
 		for (int mid = min + 1; mid < max; mid++) {
 		    BigInteger nDerivations1 = nMinMaxPath.get(min, mid);
 		    BigInteger nDerivations2 = nMaxMinEdge.get(mid, max);
-		    update(nBland, min, max, nDerivations1, nDerivations2);
+		    update(nMixConnected, min, max, nDerivations1, nDerivations2);
 		}
 
 		// Rule 07
 		for (int mid = min + 1; mid < max; mid++) {
 		    BigInteger nDerivations1 = nMaxMinPath.get(min, mid);
 		    BigInteger nDerivations2 = nMinMaxEdge.get(mid, max);
-		    update(nBland, min, max, nDerivations1, nDerivations2);
+		    update(nMixConnected, min, max, nDerivations1, nDerivations2);
 		}
 
 		// Rule 08
@@ -109,48 +110,68 @@ public class Counter {
 
 		// Rule 09
 		for (int mid = min + 1; mid < max; mid++) {
-		    BigInteger nDerivations1 = nBland.get(min, mid);
+		    BigInteger nDerivations1 = nMixConnected.get(min, mid);
 		    BigInteger nDerivations2 = nMinMaxEdge.get(mid, max);
-		    update(nBland, min, max, nDerivations1, nDerivations2);
+		    update(nMixConnected, min, max, nDerivations1, nDerivations2);
 		}
 
+		// Rule 09a
+		for (int mid = min + 1; mid < max; mid++) {
+		    BigInteger nDerivations1 = nNonConnected.get(min, mid);
+		    BigInteger nDerivations2 = nMinMaxEdge.get(mid, max);
+		    update(nNonConnected, min, max, nDerivations1, nDerivations2);
+		}
+		
 		// Rule 10
 		for (int mid = min + 1; mid < max; mid++) {
-		    BigInteger nDerivations1 = nBland.get(min, mid);
+		    BigInteger nDerivations1 = nMixConnected.get(min, mid);
 		    BigInteger nDerivations2 = nMaxMinEdge.get(mid, max);
-		    update(nBland, min, max, nDerivations1, nDerivations2);
+		    update(nMixConnected, min, max, nDerivations1, nDerivations2);
 		}
 
+		// Rule 10a
+		for (int mid = min + 1; mid < max; mid++) {
+		    BigInteger nDerivations1 = nNonConnected.get(min, mid);
+		    BigInteger nDerivations2 = nMaxMinEdge.get(mid, max);
+		    update(nNonConnected, min, max, nDerivations1, nDerivations2);
+		}
+		
 		// Rule 11
 		{
 		    BigInteger nDerivations = nMinMaxEdge.get(min, max - 1);
-		    update(nBland, min, max, nDerivations);
+		    update(nNonConnected, min, max, nDerivations);
 		}
 
 		// Rule 12
 		{
 		    BigInteger nDerivations = nMaxMinEdge.get(min, max - 1);
-		    update(nBland, min, max, nDerivations);
+		    update(nNonConnected, min, max, nDerivations);
 		}
 
 		// Rule 13
 		{
 		    BigInteger nDerivations = nMinMaxPath.get(min, max - 1);
-		    update(nBland, min, max, nDerivations);
+		    update(nNonConnected, min, max, nDerivations);
 		}
 
 		// Rule 14
 		{
 		    BigInteger nDerivations = nMaxMinPath.get(min, max - 1);
-		    update(nBland, min, max, nDerivations);
+		    update(nNonConnected, min, max, nDerivations);
 		}
 
 		// Rule 15
 		{
-		    BigInteger nDerivations = nBland.get(min, max - 1);
-		    update(nBland, min, max, nDerivations);
+		    BigInteger nDerivations = nMixConnected.get(min, max - 1);
+		    update(nNonConnected, min, max, nDerivations);
 		}
 
+		// Rule 15a
+		{
+		    BigInteger nDerivations = nNonConnected.get(min, max - 1);
+		    update(nNonConnected, min, max, nDerivations);
+		}
+		
 		// Rule 16
 		{
 		    // Adds the edge min -> max
@@ -168,14 +189,28 @@ public class Counter {
 		// Rule 18
 		{
 		    // Adds the edge min -> max
-		    BigInteger nDerivations = nBland.get(min, max);
+		    BigInteger nDerivations = nMixConnected.get(min, max);
 		    update(nMinMaxEdge, min, max, nDerivations);
 		}
 
+		// Rule 18a
+		{
+		    // Adds the edge min -> max
+		    BigInteger nDerivations = nNonConnected.get(min, max);
+		    update(nMinMaxEdge, min, max, nDerivations);
+		}
+		
 		// Rule 19
 		{
 		    // Adds the edge max -> min
-		    BigInteger nDerivations = nBland.get(min, max);
+		    BigInteger nDerivations = nMixConnected.get(min, max);
+		    update(nMaxMinEdge, min, max, nDerivations);
+		}
+		
+		// Rule 19a
+		{
+		    // Adds the edge max -> min
+		    BigInteger nDerivations = nNonConnected.get(min, max);
 		    update(nMaxMinEdge, min, max, nDerivations);
 		}
 	    }
@@ -186,7 +221,8 @@ public class Counter {
 	result = result.add(nMaxMinEdge.get(0, nNodes - 1));
 	result = result.add(nMinMaxPath.get(0, nNodes - 1));
 	result = result.add(nMaxMinPath.get(0, nNodes - 1));
-	result = result.add(nBland.get(0, nNodes - 1));
+	result = result.add(nMixConnected.get(0, nNodes - 1));
+	result = result.add(nNonConnected.get(0, nNodes - 1));
 	return result;
     }
 
